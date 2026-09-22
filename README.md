@@ -113,9 +113,32 @@ Instagram profile information can be retrieved through the relevant API integrat
 
 Conversation information is stored in an Airtable table for tracking and support management.
 
-📊 Example Data
+## 💬 Example AI Support Flow
 
-Example conversation fields include:
+### Customer Message
+
+> "Hi, I want to know if this serum is suitable for oily skin."
+
+### AI Processing
+
+**Category:** Product Question  
+**Sentiment:** Neutral  
+**Needs Human:** No
+
+### Automated Response
+
+The AI Agent generates a helpful response based on the available product information and customer-support context.
+
+### Conversation Record
+
+```text
+User ID: demo_user_001
+Username: demo_customer
+Message: Product suitability question
+Category: Product Question
+Sentiment: Neutral
+Status: New
+Needs Human: No
 
 User ID
 Username
