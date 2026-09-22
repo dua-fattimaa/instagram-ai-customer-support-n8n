@@ -133,10 +133,18 @@ No API keys, access tokens, webhook verification tokens, passwords, or private c
 
 The workflow should be configured with environment-specific credentials before deployment.
 
-📷 Screenshots
+## 📷 Workflow Screenshots
 
-Screenshots of the n8n workflow and Airtable database will be added to this repository.
+### n8n Automation Workflow
 
+![n8n Instagram AI Customer Support Workflow](porfolio.png)
+
+### Additional Workflow View
+
+![Instagram AI Customer Support](image_2026-09-23-022823137.png)
+
+These screenshots demonstrate the workflow structure and automation components used in the project.
+The workflow demonstrates the automation pipeline from receiving an Instagram message to AI processing and conversation storage.
 👩‍💻 About
 
 This project was created as a self-directed portfolio project while studying BS Artificial Intelligence at The University of Lahore.
