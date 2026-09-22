@@ -1,0 +1,256 @@
+{
+  "name": "Instagram AI Customer Support - Portfolio Version",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "instagram-ai-support",
+        "responseMode": "responseNode"
+      },
+      "name": "Instagram Webhook Verification",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -900,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json.query[\"hub.challenge\"]}}"
+      },
+      "name": "Respond to Instagram Verification",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -650,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "instagram-ai-support",
+        "responseMode": "onReceived"
+      },
+      "name": "Instagram Incoming Messages",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -900,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "demo-user-id",
+              "name": "user_id",
+              "value": "={{$json.body.entry?.[0]?.messaging?.[0]?.sender?.id || 'demo_user_001'}}",
+              "type": "string"
+            },
+            {
+              "id": "demo-message",
+              "name": "message",
+              "value": "={{$json.body.entry?.[0]?.messaging?.[0]?.message?.text || 'Hi, I want to know if this serum is suitable for oily skin.'}}",
+              "type": "string"
+            },
+            {
+              "id": "demo-timestamp",
+              "name": "timestamp",
+              "value": "={{$json.body.entry?.[0]?.messaging?.[0]?.timestamp || $now}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Format Instagram Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -650,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "message-check",
+              "leftValue": "={{$json.message}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Validate Message",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -400,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$json.message}}",
+        "options": {
+          "systemMessage": "You are an AI customer support assistant for an Instagram-based business. Analyze the incoming customer message and return structured customer-support information.\n\nClassify the message into one of these categories:\n- Product Question\n- Shipping\n- Order Issue\n- Return/Refund\n- Collaboration\n- Spam\n- Other\n\nAlso determine:\n- Sentiment: Positive, Neutral, or Negative\n- needs_human: true or false\n- A short suggested Instagram DM reply\n\nRules:\n1. Never invent prices, policies, delivery times, product information, or order information.\n2. If the customer has a complaint, refund request, order problem, or issue requiring human attention, set needs_human to true.\n3. Spam messages should be classified as Spam.\n4. Keep the suggested response concise and suitable for Instagram DMs.\n5. Be polite, helpful, and professional.\n6. If information is unavailable, recommend human assistance instead of guessing.\n\nReturn the analysis in a clear structured format."
+        }
+      },
+      "name": "Instagram AI Customer Support",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -100,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "openai/gpt-oss-20b"
+        },
+        "options": {}
+      },
+      "name": "AI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        350
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_ID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "Demo Customer",
+            "User ID": "={{$json.user_id || 'demo_user_001'}}",
+            "Username": "demo_customer",
+            "Message": "={{$json.message || 'Product suitability question'}}",
+            "Timestamp": "={{$json.timestamp || $now}}",
+            "Conversation ID": "={{$json.user_id || 'demo_conversation_001'}}",
+            "Category": "Product Question",
+            "Sentiment": "Neutral",
+            "Status": "New",
+            "AI Reply": "The AI Agent generates a concise customer-support response based on the available information.",
+            "Needs Human": "No"
+          }
+        },
+        "options": {}
+      },
+      "name": "Customer Conversation Database",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        250,
+        100
+      ]
+    }
+  ],
+  "connections": {
+    "Instagram Webhook Verification": {
+      "main": [
+        [
+          {
+            "node": "Respond to Instagram Verification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Incoming Messages": {
+      "main": [
+        [
+          {
+            "node": "Format Instagram Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Instagram Message": {
+      "main": [
+        [
+          {
+            "node": "Validate Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Message": {
+      "main": [
+        [
+          {
+            "node": "Instagram AI Customer Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Instagram AI Customer Support": {
+      "main": [
+        [
+          {
+            "node": "Customer Conversation Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Instagram AI Customer Support",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
