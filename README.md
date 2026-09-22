@@ -131,7 +131,7 @@ The AI Agent generates a helpful response based on the available product informa
 
 ### Conversation Record
 
-```text
+text:
 User ID: demo_user_001
 Username: demo_customer
 Message: Product suitability question
@@ -168,6 +168,25 @@ The workflow should be configured with environment-specific credentials before d
 
 These screenshots demonstrate the workflow structure and automation components used in the project.
 The workflow demonstrates the automation pipeline from receiving an Instagram message to AI processing and conversation storage.
+
+## 📦 Portfolio Workflow
+
+A sanitized, portfolio-ready version of the n8n workflow is included in this repository.
+
+**Workflow file:** `instagram-ai-customer-support-portfolio.json`
+
+The public workflow demonstrates:
+
+- Instagram webhook message handling
+- Message validation
+- AI-powered customer message classification
+- Sentiment analysis
+- Human-support escalation
+- Airtable conversation logging
+- AI-generated customer-support response logic
+
+> 🔒 Private credentials, account identifiers, webhook IDs, and other sensitive configuration have been removed from the public workflow file.
+
 👩‍💻 About
 
 This project was created as a self-directed portfolio project while studying BS Artificial Intelligence at The University of Lahore.
