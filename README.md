@@ -36,33 +36,47 @@ Generates an appropriate response.
 Looks up available Instagram profile information.
 Stores the conversation in Airtable.
 Identifies conversations that may require human support.
-⚙️ Workflow Architecture
-Instagram DM
-     ↓
-Meta / Instagram Webhook
-     ↓
-Format Instagram Message
-     ↓
-Workflow Logic
-     ↓
-AI Agent
-     ↓
-Intent + Sentiment Analysis
-     ↓
-Generate Response
-     ↓
-Instagram Profile Lookup
-     ↓
-Airtable
-     ↓
-Conversation Record
+
+## ⚙️ Workflow Architecture
+```text
+Instagram Customer Message
+          │
+          ▼
+   Instagram Webhook
+          │
+          ▼
+   Format Message
+          │
+          ▼
+   Validate Message
+          │
+          ▼
+      AI Agent
+          │
+          ├───────────────┐
+          │               │
+          ▼               ▼
+   Intent Category     Sentiment
+          │               │
+          └───────┬───────┘
+                  │
+                  ▼
+          Human Support Check
+                  │
+                  ▼
+        Suggested AI Response
+                  │
+                  ▼
+       Airtable Conversation
+             Database
+```
+
 ✨ Features
 Instagram DM webhook integration
 AI-powered message processing
 Customer intent classification
 Sentiment analysis
 Human-support escalation
-Instagram profile lookup
 Airtable conversation logging
 Automated workflow routing
 REST API integration
@@ -90,6 +104,7 @@ Webhooks	Real-time event handling
 REST APIs	System integrations
 JSON	Structured data processing
 🧩 Main Workflow Components
+
 1. Instagram Webhook
 
 Receives incoming Instagram messaging events from Meta.
@@ -101,13 +116,14 @@ Extracts useful information such as:
 User ID
 Message
 Timestamp
+
 3. AI Processing
 
 The AI Agent analyzes the incoming message and determines the appropriate category and response.
 
-4. Profile Lookup
+4. Airtable Storage
 
-Instagram profile information can be retrieved through the relevant API integration.
+Conversation information and AI support analysis are stored in Airtable for tracking and support management.
 
 5. Airtable Storage
 
@@ -121,9 +137,9 @@ Conversation information is stored in an Airtable table for tracking and support
 
 ### AI Processing
 
-**Category:** Product Question  
-**Sentiment:** Neutral  
-**Needs Human:** No
+Category: Product Question  
+Sentiment: Neutral  
+Needs Human:No
 
 ### Automated Response
 
@@ -131,7 +147,7 @@ The AI Agent generates a helpful response based on the available product informa
 
 ### Conversation Record
 
-text:
+```text:
 User ID: demo_user_001
 Username: demo_customer
 Message: Product suitability question
@@ -139,6 +155,7 @@ Category: Product Question
 Sentiment: Neutral
 Status: New
 Needs Human: No
+```
 
 User ID
 Username
