@@ -81,6 +81,32 @@ Airtable conversation logging
 Automated workflow routing
 REST API integration
 Structured conversation data
+
+## 🚀 Project Highlights
+
+- Built an end-to-end Instagram customer-support automation workflow using n8n.
+- Designed webhook-based processing for incoming Instagram messages.
+- Implemented AI-powered customer intent classification.
+- Added sentiment analysis for incoming conversations.
+- Added human-support escalation logic for sensitive or complex requests.
+- Generated concise AI-assisted customer-support responses.
+- Structured customer conversation data for Airtable storage.
+- Used conditional workflow logic to validate incoming messages.
+- Designed the workflow around REST API and webhook-based integrations.
+- Created a sanitized public workflow export for portfolio demonstration.
+
+### 💼 Skills Demonstrated
+
+Automation: n8n, workflow design, conditional logic, webhooks
+
+AI: AI agents, prompt engineering, intent classification, sentiment analysis
+
+Integrations: Instagram / Meta API, REST APIs, Airtable
+
+Data: JSON, structured data processing, conversation logging
+
+Development: API-based workflows, automation architecture, debugging
+
 🗂️ Conversation Categories
 
 The AI system can classify conversations into categories such as:
